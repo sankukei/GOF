@@ -53,19 +53,47 @@ class Game {
 		exec("printf");
 		$i = 0;
 		$l = "|";
-		$bar = "[--------------------------]";
+		$bar = "[ - - - - - - - - - - - - - - - - - - - - - - - - - - ]\r";
 		$chars = str_split($bar);
+		echo "LOADING: " . PHP_EOL;
 		echo $bar;
 		foreach ($chars as $char) {
-
-			// if($char == "-") {
-
-			// 	str_replace("-", $l, )
-			// }
+			
+			if($i === 0) {
+				$i++;
+				echo "[";
+				continue;
+			}
+			if($i === 19) {
+				echo "]";
+				break;
+			}
 
 			usleep(100000);
-			echo $char;
+			echo " ";
+			if($i > 0 && $i < 7) {
+
+				echo "\033[0;92m$l\033[0m";
+				
+			} else 
+			if ($i > 6 && $i < 13){
+				
+				echo "\033[0;33m$l\033[0m";
+			} else 
+			if ($i > 12 && $i < 21) {
+
+				echo "\033[0;31m$l\033[0m";
+			}
+			echo " ";
+			$i++;
 		}
+		usleep(100000);
+
+		system('clear');
+
+		echo PHP_EOL . "[OK] :)";
+
+
 
 	}
 	public function create_grid($hihi) {
