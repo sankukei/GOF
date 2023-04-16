@@ -22,6 +22,8 @@ class Game {
 
 		while($i <= 50) {
 
+			var_dump($bar);
+
 			echo "  LOADING" . " ( $percent% ) [";
 			if ($i === 50) {
 				echo ">]" . PHP_EOL . PHP_EOL;
@@ -48,8 +50,23 @@ class Game {
 	public function loading() {
 
 
+		exec("printf");
 		$i = 0;
-		$str = [];
+		$l = "|";
+		$bar = "[--------------------------]";
+		$chars = str_split($bar);
+		echo $bar;
+		foreach ($chars as $char) {
+
+			// if($char == "-") {
+
+			// 	str_replace("-", $l, )
+			// }
+
+			usleep(100000);
+			echo $char;
+		}
+
 	}
 	public function create_grid($hihi) {
 
@@ -119,7 +136,8 @@ class Game {
 	public function get_input() {
 
 		$set = 0;
-		$this->progress_bar();
+		$this->loading();
+		// $this->progress_bar();
 		$this->create_grid(0);
 		echo PHP_EOL;
 		$input = readline("Press enter to start");
