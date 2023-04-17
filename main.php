@@ -47,9 +47,56 @@ class Game {
 
 	public function loading() {
 
+		system('clear');
 
 		$i = 0;
 		$str = [];
+		$bar = "[ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ]";
+		$l = "|";
+
+		echo "[LOADING]: " . PHP_EOL;
+		echo "$bar\r";
+		$res = str_split($bar);
+
+		foreach($res as $r) {
+
+			usleep(10000);
+
+			if($r === "[") {
+
+				echo "[";
+
+			} else 
+			if ($r === " ") {
+
+				echo " ";
+			} else
+			if ($r === "-") {
+				if ($i > 0 && $i < 20) {
+					echo "\033[0;31m$l\033[0m";
+				} else
+				if ($i === 20) {
+					echo "\033[0;36m$l\033[0m";
+				} else
+				if ($i > 20 && $i < 40) {
+					echo "\033[0;33m$l\033[0m";
+				} else
+				if ($i === 40) {
+					echo "\033[0;36m$l\033[0m";
+
+				} else
+				if ($i > 40 && $i < 61) {
+					echo "\033[0;32m$l\033[0m";
+				}
+			}
+
+			$i++;
+
+		}
+
+		usleep(1000000);
+		echo PHP_EOL;
+		system('clear');
 	}
 	public function create_grid($hihi) {
 
@@ -119,7 +166,8 @@ class Game {
 	public function get_input() {
 
 		$set = 0;
-		$this->progress_bar();
+		$this->loading();
+		// $this->progress_bar();
 		$this->create_grid(0);
 		echo PHP_EOL;
 		$input = readline("Press enter to start");
