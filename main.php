@@ -33,7 +33,6 @@ class Game {
 				echo $res;
 				echo $stop;
 			}
-		
 			echo strlen($res);
 			usleep(100000);
 			system('clear');
@@ -50,28 +49,26 @@ class Game {
 		system('clear');
 
 		$i = 0;
-		$str = [];
-		$bar = "[ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ]";
+		// $str = [];
+		$bar = "[ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ]\r";
 		$l = "|";
 
-		echo "[LOADING]: " . PHP_EOL;
+		echo "\033[0;33m[LOADING] :\033[0m" . PHP_EOL;
 		echo "$bar\r";
 		$res = str_split($bar);
 
 		foreach($res as $r) {
 
-			usleep(10000);
-
 			if($r === "[") {
-
 				echo "[";
-
 			} else 
 			if ($r === " ") {
 
 				echo " ";
-			} else
+			} else			
 			if ($r === "-") {
+				usleep(66666);
+				// echo date(time());
 				if ($i > 0 && $i < 20) {
 					echo "\033[0;31m$l\033[0m";
 				} else
@@ -89,11 +86,10 @@ class Game {
 					echo "\033[0;32m$l\033[0m";
 				}
 			}
-
 			$i++;
-
 		}
 
+		echo PHP_EOL . "\033[0;32m[OK] :)\033[0m";
 		usleep(1000000);
 		echo PHP_EOL;
 		system('clear');
@@ -104,7 +100,7 @@ class Game {
 		if ($hihi === 0) {
 
 			usleep(100000);
-			echo "Welcome to The game of life ! " . PHP_EOL;
+			echo "Welcome to \033[0;31mThe\033[0m \033[0;32mGame\033[0m \033[0;33mOf\033[0m \033[0;34mLife\033[0m \033[0;35m!\033[0m " . PHP_EOL;
 			usleep(100000);
 			echo "This a game about entropy and life itself !" . PHP_EOL;
 			usleep(100000);
@@ -166,7 +162,7 @@ class Game {
 	public function get_input() {
 
 		$set = 0;
-		$this->loading();
+		// $this->loading();
 		// $this->progress_bar();
 		$this->create_grid(0);
 		echo PHP_EOL;
@@ -189,13 +185,7 @@ class Game {
 			}
 		}
 	}
-	// public function test() {
 
-
-	// 	$grid = $this->gameloop();
-	// 	var_dump($grid);
-
-	// }
 	public function gameloop() {
 
 		// echo PHP_EOL;
@@ -250,6 +240,18 @@ class Game {
 				} else {
 					$a = $this->place_cells($a, 5);
 				}
+			}
+			if ($input === "\t") {
+
+				echo "xd";
+				$this->simulation($a);
+				// echo "Enter key was pressed";
+				// if($t == 0) {
+				// 	$a = $this->place_cells($grid, 5);
+				// 	$t++;
+				// } else {
+				// 	$a = $this->place_cells($a, 5);
+				// }
 			}
 		}
 	}
@@ -306,21 +308,24 @@ class Game {
 
 	public function simulation($grid) {
 
+		var_dump($grid);
 
 		$i = 0;
-		$y = 0;
+		$y = -1;
 
-		while(true) {
-			while($grid[$i]){
-				while ($grid[$i][$y]) {
+		$az = count($grid[$i]);
 
-					// 1) Any live cell with two or three live neighbours survives.
-					// 2) Any dead cell with three live neighbours becomes a live cell.
-					// 3) All other live cells die in the next generation. Similarly, all other dead cells stay dead.
+		while($grid[$i]) {
+			while ($y < $az) {
 
-					$y++;
-				}
+				
+				echo "a ";
+				// 1) Any live cell with two or three live neighbours survives.
+				// 2) Any dead cell with three live neighbours becomes a live cell.
+				// 3) All other live cells die in the next generation. Similarly, all other dead cells stay dead.
+				$y++;
 			}
+			echo "b ";
 			$y = 0;
 			$i++;
 		}
