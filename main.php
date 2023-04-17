@@ -162,7 +162,7 @@ class Game {
 	public function get_input() {
 
 		$set = 0;
-		// $this->loading();
+		$this->loading();
 		// $this->progress_bar();
 		$this->create_grid(0);
 		echo PHP_EOL;
@@ -311,15 +311,19 @@ class Game {
 		var_dump($grid);
 
 		$i = 0;
-		$y = -1;
+		$y = 0;
 
-		$az = count($grid[$i]);
+		$count_r = count($grid);
+		$count_c = count($grid[$i]);
 
-		while($grid[$i]) {
-			while ($y < $az) {
+		while($i < $count_r) {
+			while ($y < $count_c) {
 
-				
-				echo "a ";
+
+				if ($grid[$i][$y] === 0) {
+
+					echo "a ";
+				} 
 				// 1) Any live cell with two or three live neighbours survives.
 				// 2) Any dead cell with three live neighbours becomes a live cell.
 				// 3) All other live cells die in the next generation. Similarly, all other dead cells stay dead.
