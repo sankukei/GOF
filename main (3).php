@@ -24,8 +24,6 @@ class Game
 
 		while ($i <= 50) {
 
-			var_dump($bar);
-
 			echo "  LOADING" . " ( $percent% ) [";
 			if ($i === 50) {
 				echo ">]" . PHP_EOL . PHP_EOL;
@@ -53,51 +51,51 @@ class Game
 
 		system('clear');
 
-		exec("printf");
 		$i = 0;
+		// $str = [];
+		$bar = "[ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ]\r";
 		$l = "|";
-		$bar = "[ - - - - - - - - - - - - - - - - - - - - - - - - - - ]\r";
-		$chars = str_split($bar);
-		echo "LOADING: " . PHP_EOL;
-		echo $bar;
-		foreach ($chars as $char) {
-			
-			if($i === 0) {
-				$i++;
+
+		echo "\033[0;33m[LOADING] :\033[0m" . PHP_EOL;
+		echo "$bar\r";
+		$res = str_split($bar);
+
+		foreach ($res as $r) {
+
+			if ($r === "[") {
 				echo "[";
-				continue;
-			}
-			if($i === 19) {
-				echo "]";
-				break;
-			}
+			} else
+				if ($r === " ") {
 
-			usleep(100000);
-			echo " ";
-			if($i > 0 && $i < 7) {
+					echo " ";
+				} else
+					if ($r === "-") {
+						usleep(66666);
+						// echo date(time());
+						if ($i > 0 && $i < 20) {
+							echo "\033[0;31m$l\033[0m";
+						} else
+							if ($i === 20) {
+								echo "\033[0;36m$l\033[0m";
+							} else
+								if ($i > 20 && $i < 40) {
+									echo "\033[0;33m$l\033[0m";
+								} else
+									if ($i === 40) {
+										echo "\033[0;36m$l\033[0m";
 
-				echo "\033[0;92m$l\033[0m";
-				
-			} else 
-			if ($i > 6 && $i < 13){
-				
-				echo "\033[0;33m$l\033[0m";
-			} else 
-			if ($i > 12 && $i < 21) {
-
-				echo "\033[0;31m$l\033[0m";
-			}
-			echo " ";
+									} else
+										if ($i > 40 && $i < 61) {
+											echo "\033[0;32m$l\033[0m";
+										}
+					}
 			$i++;
 		}
-		usleep(100000);
 
+		echo PHP_EOL . "\033[0;32m[OK] :)\033[0m";
+		usleep(1000000);
+		echo PHP_EOL;
 		system('clear');
-
-		echo PHP_EOL . "[OK] :)";
-
-
-
 	}
 	public function create_grid($hihi)
 	{
