@@ -65,30 +65,30 @@ class Game
 			if ($r === "[") {
 				echo "[";
 			} else
-				if ($r === " ") {
+			if ($r === " ") {
 
-					echo " ";
-				} else
-					if ($r === "-") {
-						usleep(66666);
-						// echo date(time());
-						if ($i > 0 && $i < 20) {
+				echo " ";
+			} else
+			if ($r === "-") {
+				usleep(66666);
+				// echo date(time());
+				if ($i > 0 && $i < 20) {
 							echo "\033[0;31m$l\033[0m";
-						} else
-							if ($i === 20) {
-								echo "\033[0;36m$l\033[0m";
-							} else
-								if ($i > 20 && $i < 40) {
-									echo "\033[0;33m$l\033[0m";
-								} else
-									if ($i === 40) {
-										echo "\033[0;36m$l\033[0m";
+				} else
+				if ($i === 20) {
+					echo "\033[0;36m$l\033[0m";
+				} else
+				if ($i > 20 && $i < 40) {
+				echo "\033[0;33m$l\033[0m";
+				} else
+				if ($i === 40) {
+				echo "\033[0;36m$l\033[0m";
 
-									} else
-										if ($i > 40 && $i < 61) {
-											echo "\033[0;32m$l\033[0m";
-										}
-					}
+				} else
+				if ($i > 40 && $i < 61) {
+					echo "\033[0;32m$l\033[0m";
+				}
+			}
 			$i++;
 		}
 
@@ -151,14 +151,25 @@ class Game
 					echo $str[$i][$y] . " ";
 					$y++;
 				}
-				if ($hihi === 0) {
 
-					usleep(100000);
-				}
 				echo PHP_EOL;
 				$y = 0;
 				$i++;
 			}
+		}
+
+		if ($hihi === 3) {
+			while ($i < 25) {
+				while ($y < 25) {
+
+					$str[$i][$y] = 0;
+					$y++;
+				}
+				$y = 0;
+				$i++;
+			}
+
+
 		}
 		return $str;
 	}
@@ -228,6 +239,7 @@ class Game
 			if ($input === "\t") {
 
 				$this->simulation($grid);
+				break;
 			}
 		}
 	}
@@ -286,49 +298,93 @@ class Game
 	public function simulation($grid)
 	{
 
-		// var_dump($grid);
-
 		$i = 0;
 		$y = 0;
-
+		$new_grid = $this->create_grid(3);
 		$count_r = count($grid);
 		$count_c = count($grid[$i]);
 		$alive = 0;
 
+		echo PHP_EOL;
+
 		while ($i < $count_r) {
 			while ($y < $count_c) {
 
-				if (($i > 0 && $i < 23) && ($y > 0 && $i < 23)) {
+				if (($i > 0 && $i < $count_r - 1) && ($y > 0 && $y < $count_c - 1)) {
 
-					if ($grid[$i - 1][$y - 1] !== 0 || $grid[$i - 1][$y] !== 0 || $$grid[$i - 1][$y + 1] !== 0) {
 
+
+					// if (($grid[$i - 1][$y - 1] !== 0) || ($grid[$i - 1][$y] !== 0) || ($grid[$i - 1][$y + 1] !== 0)) {
+
+					// 	$alive++;
+					// }
+					// if (($grid[$i][$y - 1] !== 0) || ($grid[$i][$y + 1] !== 0)) { 
+
+					// 	$alive++;
+					// }
+					// if (($grid[$i + 1][$y - 1] !== 0) || ($grid[$i + 1][$y] !== 0) || ($grid[$i + 1][$y + 1] !== 0)) {
+
+					// 	$alive++;
+					// }
+					// if ($alive >= 3) {
+
+					// 	$grid[$i][$y] = 1;
+					// 	$alive = 0;
+					// } else {
+
+					// 	$grid[$i][$y] = 0;
+					// 	$alive = 0;
+					// }
+
+					if ($grid[$i - 1][$y - 1] !== 0) {
+						$alive++;
+					} 
+					if ($grid[$i - 1][$y] !== 0) {
+						$alive++;
+					} 
+					if ($grid[$i - 1][$y + 1] !== 0) {
+						$alive++;
+					} 
+					if ($grid[$i][$y - 1] !== 0) {
+						$alive ++;
+					} 
+					if ($grid[$i][$y + 1] !== 0) {
+						$alive++;
+					} 
+					if ($grid[$i + 1][$y - 1] !== 0) {
+						$alive++;
+					} 
+					if ($grid[$i + 	1][$y] !== 0) {
+						$alive++;
+					} 
+					if ($grid[$i + 1][$y + 1] !== 0) {
+						$alive++;
+					} 
+
+
+
+					if ($alive >= 4) {
+
+						$new_grid[$i][$y] = 0; 
+						// array_push($new_grid, 0);
 						// $grid[$i][$y] = 0;
-						$alive++;
-
-						echo "easy algo";
-					}
-
-					if ($grid[$i][$y - 1] !== 0 || $grid[$i][$y + 1] !== 0) { 
-
-						$alive++;
-
-					}
-					if ($grid[$i + 1][$y - 1] !== 0 || $grid[$i + 1][$y] !== 0 || $grid[$i + 1][$y + 1] !== 0) {
-
-						$alive++;
-					}
-					if ($alive > 3) {
-
-						$grid[$i][$y] = "!";
 						$alive = 0;
-					} else {
+					} 
+					if ($alive > 1 && $alive < 4) {
 
-						$grid[$i][$y] = 0;
+						$new_grid[$i][$y] = 1;
+						// $grid[$i][$y] = "\e[0;31;42m#\e[0m";
+						// array_push($new_grid, 1);
 						$alive = 0;
+					}
+					else {
 
+						// echo $p++ . PHP_EOL;
+						$new_grid[$i][$y] = 0;
+						// array_push($new_grid, 0);
+						$alive = 0;
 					}
 				}
-
 				// 1) Any live cell with two or three live neighbours survives.
 				// 2) Any dead cell with three live neighbours becomes a live cell.
 				// 3) All other live cells die in the next generation. Similarly, all other dead cells stay dead.
@@ -341,28 +397,38 @@ class Game
 
 		// TODO implementer avec tab une seul ittération, sinon on peut launch normal et ça while(1)
 
-		$this->render($grid);
+		$this->render($new_grid);
 	}
 
 	public function render($str)
 	{
 
+		$y = count($str);
+		// echo "zaejhazekzae";
 		$i = 0;
 		$y = 0;
-		// system('clear');
+		system('clear');
 
 		while ($i < 25) {
 			while ($y < 25) {
 
+				if($str[$i][$y] === 0) {
+					echo $str[$i][$y] . " ";
+				} else {
+
+					echo "\e[0;31;42m#\e[0m" . " ";
+				}
+
 				// $str[$i][$y] = 0;
-				echo $str[$i][$y] . " ";
+				// echo $str[$i][$y] . " ";
 				$y++;
 			}
 			echo PHP_EOL;
 			$y = 0;
 			$i++;
 		}
-
+		sleep(1);
+		$this->simulation($str);
 	}
 }
 
