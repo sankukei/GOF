@@ -1,25 +1,20 @@
 <?php
 
-
-
 class Game
 {
 
-
-
 	public $cell_col = 0;
 	public $cell_row = 0;
+	public $gen = 0;
 
 	public function progress_bar()
 	{
 
-
-
 		$i = 0;
-		$str = [];
 		$percent = 0;
 		$bar = "\e[33m | ";
 		$stop = "\033[0m";
+
 		system('clear');
 
 		while ($i <= 50) {
@@ -49,16 +44,15 @@ class Game
 	public function loading()
 	{
 
-		system('clear');
-
 		$i = 0;
-		// $str = [];
-		$bar = "[ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ]\r";
 		$l = "|";
-
-		echo "\033[0;33m[LOADING] :\033[0m" . PHP_EOL;
-		echo "$bar\r";
+		$bar = "[ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ]\r";
 		$res = str_split($bar);
+
+		system('clear');
+		echo PHP_EOL;
+		echo "\033[0;33m[LOADING] :\033[0m" . PHP_EOL . PHP_EOL;
+		echo "$bar\r";
 
 		foreach ($res as $r) {
 
@@ -66,14 +60,13 @@ class Game
 				echo "[";
 			} else
 			if ($r === " ") {
-
 				echo " ";
 			} else
 			if ($r === "-") {
 				usleep(66666);
 				// echo date(time());
 				if ($i > 0 && $i < 20) {
-							echo "\033[0;31m$l\033[0m";
+					echo "\033[0;31m$l\033[0m";
 				} else
 				if ($i === 20) {
 					echo "\033[0;36m$l\033[0m";
@@ -92,7 +85,7 @@ class Game
 			$i++;
 		}
 
-		echo PHP_EOL . "\033[0;32m[OK] :)\033[0m";
+		echo PHP_EOL . PHP_EOL . "\033[0;32m[OK] :)\033[0m";
 		usleep(1000000);
 		echo PHP_EOL;
 		system('clear');
@@ -104,13 +97,13 @@ class Game
 		if ($hihi === 0) {
 
 			usleep(100000);
-			echo "Welcome to \033[0;31mThe\033[0m \033[0;32mGame\033[0m \033[0;33mOf\033[0m \033[0;34mLife\033[0m \033[0;35m!\033[0m " . PHP_EOL;
+			echo "\t\t\t\t\t\tWelcome to \033[0;31mThe\033[0m \033[0;32mGame\033[0m \033[0;33mOf\033[0m \033[0;34mLife\033[0m \033[0;35m!\033[0m " . PHP_EOL;
 			usleep(100000);
-			echo "This a game about entropy and life itself !" . PHP_EOL;
+			echo "\t\t\t\t\tThis a game about entropy and life itself !" . PHP_EOL;
 			usleep(100000);
-			echo "It is a zero player game wich means all you have to do" . PHP_EOL;
+			echo "\t\t\t\t\tIt is a zero player game wich means all you have to do" . PHP_EOL;
 			usleep(100000);
-			echo "is place down some blocks and see what happens !" . PHP_EOL . PHP_EOL;
+			echo "\t\t\t\t\tis place down some blocks and see what happens !" . PHP_EOL . PHP_EOL;
 			usleep(100000);
 		}
 
@@ -118,6 +111,8 @@ class Game
 		$i = 0;
 		$y = 0;
 		if ($hihi !== 2) {
+			echo "\t\t\t\t\t";
+
 			while ($i < 25) {
 				while ($y < 25) {
 
@@ -130,6 +125,8 @@ class Game
 					usleep(100000);
 				}
 				echo PHP_EOL;
+				echo "\t\t\t\t\t";
+
 				$y = 0;
 				$i++;
 			}
@@ -138,8 +135,8 @@ class Game
 		if ($hihi === 1) {
 			echo PHP_EOL;
 			usleep(100000);
-			echo "Controls:" . PHP_EOL . PHP_EOL;
-			echo "(← ↑ → ↓) to move the cell ||" . " (ENTER) to start";
+			echo "\t\t\t\t\tControls:" . PHP_EOL . PHP_EOL;
+			echo "\t\t\t\t\t(← ↑ → ↓) to move the cell ||" . " (TAB) to start";
 		}
 
 		if ($hihi === 2) {
@@ -151,7 +148,6 @@ class Game
 					echo $str[$i][$y] . " ";
 					$y++;
 				}
-
 				echo PHP_EOL;
 				$y = 0;
 				$i++;
@@ -168,8 +164,6 @@ class Game
 				$y = 0;
 				$i++;
 			}
-
-
 		}
 		return $str;
 	}
@@ -178,9 +172,9 @@ class Game
 	{
 
 		$set = 0;
-		$this->loading();
+		// $this->loading();
 		// $this->progress_bar();
-		$this->create_grid(0);
+		// $this->create_grid(0);
 		echo PHP_EOL;
 		$input = readline("Press enter to start");
 		if ($set === 0) {
@@ -201,15 +195,12 @@ class Game
 			}
 		}
 	}
-
 	public function gameloop()
 	{
 
-		// echo PHP_EOL;
-		$grid = $this->create_grid(2);
+		$grid = $this->create_grid(1);
+
 		exec("stty -icanon min 0 time 0");
-		$t = 0;
-		$i = 0;
 		while (true) {
 
 			$input = fread(STDIN, 3);
@@ -219,22 +210,24 @@ class Game
 				$this->place_cells($grid, 4);
 			}
 			if ($input === "\033[B") {
+
 				echo "Down arrow key pressed" . PHP_EOL;
 				$this->place_cells($grid, 3);
 			}
 			if ($input === "\033[D") {
-				echo "Left arrow key pressed" . PHP_EOL;
 
+				echo "Left arrow key pressed" . PHP_EOL;
 				$this->place_cells($grid, 2);
 			}
 			if ($input === "\033[C") {
+
 				echo "Right arrow key pressed" . PHP_EOL;
 				$this->place_cells($grid, 1);
 			}
 			if ($input === "\n") {
+
 				echo "Enter key was pressed";
 				$grid = $this->place_cells($grid, 5);
-
 			}
 			if ($input === "\t") {
 
@@ -245,12 +238,11 @@ class Game
 	}
 	public function place_cells($grid, $arrow)
 	{
-		// var_dump($grid);
-
-		system('clear');
 
 		$i = 0;
 		$y = 0;
+
+		system('clear');
 
 		if ($arrow === 1) {
 			$this->cell_col += 1;
@@ -278,6 +270,9 @@ class Game
 			echo "can't access grid out of bounds" . PHP_EOL;
 		}
 
+		echo PHP_EOL;
+		echo "\t\t\t\t\t";
+
 		while ($i < 25) {
 			while ($y < 25) {
 
@@ -286,6 +281,7 @@ class Game
 				$y++;
 			}
 			echo PHP_EOL;
+			echo "\t\t\t\t\t";
 			$y = 0;
 			$i++;
 		}
@@ -303,135 +299,99 @@ class Game
 		$new_grid = $this->create_grid(3);
 		$count_r = count($grid);
 		$count_c = count($grid[$i]);
-		$alive = 0;
+		$neighbor = 0;
 
 		echo PHP_EOL;
 
 		while ($i < $count_r) {
 			while ($y < $count_c) {
 
+				$faith = 0;
 				if (($i > 0 && $i < $count_r - 1) && ($y > 0 && $y < $count_c - 1)) {
 
+					if ($grid[$i - 1][$y - 1] !== 0)
+						$neighbor++;
+					if ($grid[$i - 1][$y] !== 0)
+						$neighbor++;
+					if ($grid[$i - 1][$y + 1] !== 0)
+						$neighbor++;
+					if ($grid[$i][$y - 1] !== 0) 
+						$neighbor++;
+					if ($grid[$i][$y + 1] !== 0) 
+						$neighbor++;
+					if ($grid[$i + 1][$y - 1] !== 0) 
+						$neighbor++;
+					if ($grid[$i + 	1][$y] !== 0) 
+						$neighbor++;
+					if ($grid[$i + 1][$y + 1] !== 0) 
+						$neighbor++;
 
-
-					// if (($grid[$i - 1][$y - 1] !== 0) || ($grid[$i - 1][$y] !== 0) || ($grid[$i - 1][$y + 1] !== 0)) {
-
-					// 	$alive++;
-					// }
-					// if (($grid[$i][$y - 1] !== 0) || ($grid[$i][$y + 1] !== 0)) { 
-
-					// 	$alive++;
-					// }
-					// if (($grid[$i + 1][$y - 1] !== 0) || ($grid[$i + 1][$y] !== 0) || ($grid[$i + 1][$y + 1] !== 0)) {
-
-					// 	$alive++;
-					// }
-					// if ($alive >= 3) {
-
-					// 	$grid[$i][$y] = 1;
-					// 	$alive = 0;
-					// } else {
-
-					// 	$grid[$i][$y] = 0;
-					// 	$alive = 0;
-					// }
-
-					if ($grid[$i - 1][$y - 1] !== 0) {
-						$alive++;
+					if ($neighbor === 2) {
+						if ($grid[$i][$y] === 1) {
+							$grid[$i][$y] = 1;
+						} else {
+							$grid[$i][$y] = 0;
+						}
 					} 
-					if ($grid[$i - 1][$y] !== 0) {
-						$alive++;
-					} 
-					if ($grid[$i - 1][$y + 1] !== 0) {
-						$alive++;
-					} 
-					if ($grid[$i][$y - 1] !== 0) {
-						$alive ++;
-					} 
-					if ($grid[$i][$y + 1] !== 0) {
-						$alive++;
-					} 
-					if ($grid[$i + 1][$y - 1] !== 0) {
-						$alive++;
-					} 
-					if ($grid[$i + 	1][$y] !== 0) {
-						$alive++;
-					} 
-					if ($grid[$i + 1][$y + 1] !== 0) {
-						$alive++;
-					} 
-
-
-
-					if ($alive >= 4) {
-
-						$new_grid[$i][$y] = 0; 
-						// array_push($new_grid, 0);
-						// $grid[$i][$y] = 0;
-						$alive = 0;
-					} 
-					if ($alive > 1 && $alive < 4) {
+					if ($neighbor === 3) {
 
 						$new_grid[$i][$y] = 1;
-						// $grid[$i][$y] = "\e[0;31;42m#\e[0m";
-						// array_push($new_grid, 1);
-						$alive = 0;
-					}
-					else {
+						$neighbor = 0;
+						$faith++;
+					}  
+					if ($neighbor >= 4) {
 
-						// echo $p++ . PHP_EOL;
 						$new_grid[$i][$y] = 0;
-						// array_push($new_grid, 0);
-						$alive = 0;
+						$neighbor = 0;
+						$faith++;
+					}
+					if ($faith === 0) {
+
+						$new_grid[$i][$y] = 0;
+						$neighbor = 0;
 					}
 				}
-				// 1) Any live cell with two or three live neighbours survives.
-				// 2) Any dead cell with three live neighbours becomes a live cell.
-				// 3) All other live cells die in the next generation. Similarly, all other dead cells stay dead.
 				$y++;
 			}
-			// echo "b ";
 			$y = 0;
 			$i++;
 		}
-
-		// TODO implementer avec tab une seul ittération, sinon on peut launch normal et ça while(1)
-
 		$this->render($new_grid);
 	}
-
+	// TODO implementer avec tab une seul ittération, sinon on peut launch normal et ça while(1)
 	public function render($str)
 	{
 
 		$y = count($str);
-		// echo "zaejhazekzae";
 		$i = 0;
 		$y = 0;
+
 		system('clear');
+		echo PHP_EOL;
+		echo "\t\t\t\t\t";
 
 		while ($i < 25) {
 			while ($y < 25) {
-
 				if($str[$i][$y] === 0) {
-					echo $str[$i][$y] . " ";
+					// echo $str[$i][$y] . " ";
+					echo " " . " ";
 				} else {
-
-					echo "\e[0;31;42m#\e[0m" . " ";
+					echo "\e[0;31;42m0\e[0m" . " ";
 				}
-
 				// $str[$i][$y] = 0;
 				// echo $str[$i][$y] . " ";
 				$y++;
 			}
 			echo PHP_EOL;
+			echo "\t\t\t\t\t";
 			$y = 0;
 			$i++;
 		}
+		echo "tick : " . $this->gen++;
 		sleep(1);
 		$this->simulation($str);
 	}
 }
-
 $xd = new Game();
 $xd->get_input();
 
