@@ -172,9 +172,9 @@ class Game
 	{
 
 		$set = 0;
-		// $this->loading();
+		$this->loading();
 		// $this->progress_bar();
-		// $this->create_grid(0);
+		$this->create_grid(0);
 		echo PHP_EOL;
 		$input = readline("Press enter to start");
 		if ($set === 0) {
@@ -204,33 +204,18 @@ class Game
 		while (true) {
 
 			$input = fread(STDIN, 3);
-			if ($input === "\033[A") {
 
-				echo "Up arrow key pressed" . PHP_EOL;
+			if ($input === "\033[A") 
 				$this->place_cells($grid, 4);
-			}
-			if ($input === "\033[B") {
-
-				echo "Down arrow key pressed" . PHP_EOL;
+			if ($input === "\033[B")
 				$this->place_cells($grid, 3);
-			}
-			if ($input === "\033[D") {
-
-				echo "Left arrow key pressed" . PHP_EOL;
+			if ($input === "\033[D")
 				$this->place_cells($grid, 2);
-			}
-			if ($input === "\033[C") {
-
-				echo "Right arrow key pressed" . PHP_EOL;
+			if ($input === "\033[C")
 				$this->place_cells($grid, 1);
-			}
-			if ($input === "\n") {
-
-				echo "Enter key was pressed";
+			if ($input === "\n")
 				$grid = $this->place_cells($grid, 5);
-			}
 			if ($input === "\t") {
-
 				$this->simulation($grid);
 				break;
 			}
@@ -326,20 +311,24 @@ class Game
 					if ($grid[$i + 1][$y + 1] !== 0) 
 						$neighbor++;
 
-					if ($neighbor === 2) {
-						if ($grid[$i][$y] === 1) {
-							$grid[$i][$y] = 1;
+					if ($neighbor === 2 && $faith === 0) {
+						if ($grid[$i][$y] !== 0) {
+							$new_grid[$i][$y] = 1;
+							$neighbor = 0;
+							$faith++;
 						} else {
-							$grid[$i][$y] = 0;
+							$new_grid[$i][$y] = 0;
+							$neighbor = 0;
+							$faith++;
 						}
-					} 
-					if ($neighbor === 3) {
-
+					}
+					if ($neighbor === 3 && $faith === 0) {
+	
 						$new_grid[$i][$y] = 1;
 						$neighbor = 0;
 						$faith++;
-					}  
-					if ($neighbor >= 4) {
+					}
+					if ($neighbor >= 4 && $faith === 0) {
 
 						$new_grid[$i][$y] = 0;
 						$neighbor = 0;
@@ -356,6 +345,9 @@ class Game
 			$y = 0;
 			$i++;
 		}
+
+		// var_dump($grid);
+
 		$this->render($new_grid);
 	}
 	// TODO implementer avec tab une seul ittération, sinon on peut launch normal et ça while(1)
@@ -376,7 +368,7 @@ class Game
 					// echo $str[$i][$y] . " ";
 					echo " " . " ";
 				} else {
-					echo "\e[0;31;42m0\e[0m" . " ";
+					echo "\e[0;32;42m0\e[0m" . "\e[0;32;42m0\e[0m";
 				}
 				// $str[$i][$y] = 0;
 				// echo $str[$i][$y] . " ";
