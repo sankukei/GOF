@@ -37,7 +37,6 @@ class Game
 			$percent++;
 			$i++;
 		}
-
 		// $this->create_grid();
 	}
 
@@ -84,7 +83,6 @@ class Game
 			}
 			$i++;
 		}
-
 		echo PHP_EOL . PHP_EOL . "\033[0;32m[OK] :)\033[0m";
 		usleep(1000000);
 		echo PHP_EOL;
@@ -92,7 +90,6 @@ class Game
 	}
 	public function create_grid($hihi)
 	{
-
 		echo PHP_EOL;
 		if ($hihi === 0) {
 
@@ -131,7 +128,6 @@ class Game
 				$i++;
 			}
 		}
-
 		if ($hihi === 1) {
 			echo PHP_EOL;
 			usleep(100000);
@@ -285,6 +281,7 @@ class Game
 		$count_r = count($grid);
 		$count_c = count($grid[$i]);
 		$neighbor = 0;
+		$end = 0;
 
 		echo PHP_EOL;
 
@@ -293,6 +290,10 @@ class Game
 
 				$faith = 0;
 				if (($i > 0 && $i < $count_r - 1) && ($y > 0 && $y < $count_c - 1)) {
+
+					if ($grid[$i][$y] !== 0) {
+						$end++;
+					}
 
 					if ($grid[$i - 1][$y - 1] !== 0)
 						$neighbor++;
@@ -346,6 +347,13 @@ class Game
 			$i++;
 		}
 
+		if ($end === 0) {
+
+			system('clear');
+			$this->restart();
+			return "END";
+		}
+
 		// var_dump($grid);
 
 		$this->render($new_grid);
@@ -382,6 +390,24 @@ class Game
 		echo "tick : " . $this->gen++;
 		sleep(1);
 		$this->simulation($str);
+	}
+
+	public function restart() {
+
+		system('clear');
+		echo "Restart or quit ? (R: restart Q: quit)";
+		$input = fread(STDIN, 3);
+
+		while (1) {
+
+			if ($input === "\n") {
+				$this->gameloop();
+			}
+			if ($input === "Q") {
+				return;
+			}
+		}
+
 	}
 }
 $xd = new Game();
